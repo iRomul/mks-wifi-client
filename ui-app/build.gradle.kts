@@ -10,7 +10,7 @@ javafx {
 }
 
 application {
-    mainClass.set("io.github.iromul.mkstransfer.app.HelloFX")
+    mainClass.set("io.github.iromul.mkstransfer.app.MksWifiUiApp")
     applicationDefaultJvmArgs += listOf(
         "--add-opens", "javafx.graphics/javafx.scene=ALL-UNNAMED",
         "--add-opens", "javafx.graphics/com.sun.glass.ui=ALL-UNNAMED"
@@ -19,9 +19,10 @@ application {
 
 dependencies {
     implementation(projects.core)
+    implementation(projects.libraries.javafxCommons)
+    implementation(projects.libraries.stdlibCommons)
     implementation(kotlin("stdlib-jdk8"))
     implementation("no.tornado:tornadofx:1.7.20")
-    implementation("com.jakewharton.byteunits:byteunits:0.9.1")
     implementation("net.java.dev.jna:jna:5.10.0")
     implementation("net.java.dev.jna:jna-platform:5.10.0")
     implementation("org.slf4j:slf4j-api:1.7.5")

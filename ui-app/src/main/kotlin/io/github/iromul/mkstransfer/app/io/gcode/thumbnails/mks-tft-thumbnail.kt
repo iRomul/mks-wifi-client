@@ -1,6 +1,6 @@
 package io.github.iromul.mkstransfer.app.io.gcode.thumbnails
 
-import io.github.iromul.commons.kotlin.types.reverseByteOrder
+import io.github.iromul.commons.kotlin.types.reverseBytes
 import io.github.iromul.mkstransfer.app.io.gcode.GCodeLines
 import io.github.iromul.mkstransfer.app.io.gcode.MutableGCodeFile
 import javafx.scene.image.Image
@@ -33,7 +33,7 @@ class MksTftThumbnailWriter(
 
                     (0 until image.width.toInt()).forEach { x ->
                         val pixel = reader.getColor(x, y)
-                        val uint16pixel = pixel.to16BitPixel().reverseByteOrder().toShort()
+                        val uint16pixel = pixel.to16BitPixel().reverseBytes().toShort()
 
                         lineStringBuilder.append(String.format("%04x", uint16pixel))
                     }
