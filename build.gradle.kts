@@ -8,13 +8,17 @@ plugins {
 group = "io.github.iromul.mkstransfer"
 version = "1.0-SNAPSHOT"
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+}
+
 subprojects {
     repositories {
         mavenCentral()
     }
 
     tasks.withType<JavaCompile> {
-        sourceCompatibility = JavaVersion.VERSION_15.toString()
+        sourceCompatibility = JavaVersion.VERSION_11.toString()
     }
 
     tasks.withType<Test> {
@@ -23,7 +27,7 @@ subprojects {
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = "15"
+            jvmTarget = "11"
         }
     }
 }
