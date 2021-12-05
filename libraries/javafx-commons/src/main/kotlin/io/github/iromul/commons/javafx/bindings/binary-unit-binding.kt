@@ -1,4 +1,4 @@
-package io.github.iromul.mkstransfer.app.commons
+package io.github.iromul.commons.javafx.bindings
 
 import com.jakewharton.byteunits.BinaryByteUnit
 import javafx.beans.binding.NumberExpression

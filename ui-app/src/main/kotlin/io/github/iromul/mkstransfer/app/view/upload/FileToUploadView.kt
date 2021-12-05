@@ -1,9 +1,9 @@
 package io.github.iromul.mkstransfer.app.view.upload
 
-import io.github.iromul.commons.kotlin.reflection.requireResource
-import io.github.iromul.mkstransfer.app.commons.asBinaryUnit
+import io.github.iromul.commons.javafx.bindings.asBinaryUnit
+import io.github.iromul.commons.javafx.opacity
+import io.github.iromul.commons.lang.requireResource
 import io.github.iromul.mkstransfer.app.controller.PrinterController
-import io.github.iromul.mkstransfer.app.opacity
 import javafx.geometry.Pos
 import javafx.scene.image.Image
 import javafx.scene.paint.Color
