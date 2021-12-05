@@ -2,11 +2,13 @@ package io.github.iromul.mkstransfer.app
 
 import io.github.iromul.mkstransfer.app.service.SendService
 import io.github.iromul.mkstransfer.app.view.MainView
+import javafx.scene.image.Image
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import tornadofx.App
 import tornadofx.DIContainer
 import tornadofx.FX
+import tornadofx.addStageIcon
 import tornadofx.launch
 import java.nio.file.Path
 import kotlin.reflect.KClass
@@ -27,6 +29,10 @@ class HelloFX : App(MainView::class) {
             override fun <T : Any> getInstance(type: KClass<T>): T =
                 koinApp.koin.get(type)
         }
+
+        addStageIcon(Image(resources["/icons/benchy@64px.png"]))
+        addStageIcon(Image(resources["/icons/benchy@128px.png"]))
+        addStageIcon(Image(resources["/icons/benchy@256px.png"]))
     }
 
     override val configBasePath = pathOf(userHome, ".mks-wifi-transfer")

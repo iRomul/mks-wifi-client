@@ -1,4 +1,4 @@
-package io.github.iromul.mkstransfer.app.view
+package io.github.iromul.mkstransfer.app.view.styles
 
 import javafx.scene.layout.BorderStrokeStyle
 import javafx.scene.paint.Color
