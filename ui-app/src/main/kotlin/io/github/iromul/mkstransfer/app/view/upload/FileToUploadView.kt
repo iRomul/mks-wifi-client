@@ -84,13 +84,13 @@ class FileToUploadView : View() {
                         }
 
                         button("Send").action {
-                            add(RestProgressBar::class)
-
                             runAsync {
                                 printerController.uploadFile()
                             }
                         }
                     }
+
+                    add(RestProgressBar::class)
                 }
             }
         }
