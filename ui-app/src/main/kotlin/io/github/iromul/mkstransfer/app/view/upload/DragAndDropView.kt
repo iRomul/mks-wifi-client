@@ -1,7 +1,7 @@
 package io.github.iromul.mkstransfer.app.view.upload
 
 import io.github.iromul.mkstransfer.app.controller.PrinterController
-import io.github.iromul.mkstransfer.app.view.DragAndDropStylesheet
+import io.github.iromul.mkstransfer.app.view.styles.DragAndDropStylesheet
 import javafx.geometry.Pos
 import javafx.scene.input.Dragboard
 import javafx.scene.input.TransferMode
