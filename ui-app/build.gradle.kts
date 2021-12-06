@@ -19,6 +19,7 @@ application {
 
 dependencies {
     implementation(projects.core)
+    implementation(projects.libraries.gcodeFile)
     implementation(projects.libraries.javafxCommons)
     implementation(projects.libraries.stdlibCommons)
     implementation(kotlin("stdlib-jdk8"))
@@ -33,7 +34,7 @@ dependencies {
     implementation("io.insert-koin:koin-logger-slf4j:3.1.4")
     // Testing
     testImplementation("io.insert-koin:koin-test:3.1.4")
-    testImplementation(platform("org.junit:junit-bom:5.8.1"))
+    testImplementation(platform("org.junit:junit-bom:5.8.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
 }

@@ -1,8 +1,8 @@
 package io.github.iromul.mkstransfer.app.io.gcode.thumbnails
 
 import io.github.iromul.commons.kotlin.types.reverseBytes
-import io.github.iromul.mkstransfer.app.io.gcode.GCodeLines
-import io.github.iromul.mkstransfer.app.io.gcode.MutableGCodeFile
+import io.github.iromul.gcode.file.MutableGCodeFile
+import io.github.iromul.gcode.file.line.GCodeLines
 import javafx.scene.image.Image
 import javafx.scene.paint.Color
 import kotlin.math.roundToInt

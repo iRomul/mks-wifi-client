@@ -3,6 +3,8 @@ package io.github.iromul.mkstransfer.app.io.gcode
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
+import io.github.iromul.gcode.file.GCodeFile
+import io.github.iromul.gcode.file.line.GCodeLine
 import io.github.iromul.mkstransfer.app.io.gcode.thumbnails.Base64EncodedThumbnail
 import io.github.iromul.mkstransfer.app.io.gcode.thumbnails.PrusaSlicerEmbeddedThumbnailReader
 import org.junit.jupiter.api.Test

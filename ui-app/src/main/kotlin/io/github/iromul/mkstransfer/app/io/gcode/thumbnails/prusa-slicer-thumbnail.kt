@@ -1,7 +1,7 @@
 package io.github.iromul.mkstransfer.app.io.gcode.thumbnails
 
-import io.github.iromul.mkstransfer.app.io.gcode.GCodeFile
-import io.github.iromul.mkstransfer.app.io.gcode.GCodeLine
+import io.github.iromul.gcode.file.GCodeFile
+import io.github.iromul.gcode.file.line.GCodeLine
 import javafx.scene.image.Image
 import java.util.Base64
 
