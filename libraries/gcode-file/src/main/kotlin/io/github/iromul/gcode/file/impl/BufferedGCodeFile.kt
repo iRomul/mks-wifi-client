@@ -16,7 +16,7 @@ class BufferedGCodeFile(
     }
 
     override fun trimHead() {
-        val exceptFirst = lines.dropWhile { it.isEmpty || it.isComment }
+        val exceptFirst = lines.dropWhile { it.isBlank || it.isComment }
 
         lines.apply {
             clear()

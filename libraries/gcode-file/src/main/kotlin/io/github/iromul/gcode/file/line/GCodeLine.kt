@@ -7,8 +7,8 @@ data class GCodeLine(
     val isComment: Boolean =
         line.trim().startsWith(";")
 
-    val isEmpty: Boolean =
-        line.trim().isEmpty()
+    val isBlank: Boolean =
+        line.trim().isBlank()
 
     val isCommand: Boolean =
         line.trim().takeIf { it.isNotEmpty() }?.let { it[0].isLetter() } ?: false
