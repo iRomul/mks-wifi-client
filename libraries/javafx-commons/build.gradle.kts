@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm")
-    id("org.openjfx.javafxplugin") version "0.0.10"
+    id("org.openjfx.javafxplugin") version libs.versions.javafxplugin
 }
 
 javafx {
@@ -9,5 +9,5 @@ javafx {
 }
 
 dependencies {
-    implementation("com.jakewharton.byteunits:byteunits:0.9.1")
+    implementation(libs.byteunits)
 }

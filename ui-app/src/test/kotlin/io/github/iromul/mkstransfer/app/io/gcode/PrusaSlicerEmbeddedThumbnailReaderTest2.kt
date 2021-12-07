@@ -12,7 +12,7 @@ internal class PrusaSlicerEmbeddedThumbnailReaderTest2 {
     @Test
     internal fun `export files`() {
         val file = File(javaClass.classLoader.getResource("Crab6_1_with_Chain_Holder.gcode")!!.toURI())
-        val gCodeFile = GCodeFileReader.load(file.reader())
+        val gCodeFile = GCodeFiles.load(file.reader())
 
         val reader = PrusaSlicerEmbeddedThumbnailReader(gCodeFile)
 

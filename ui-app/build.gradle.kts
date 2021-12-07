@@ -1,7 +1,7 @@
 plugins {
     application
     kotlin("jvm")
-    id("org.openjfx.javafxplugin") version "0.0.10"
+    id("org.openjfx.javafxplugin") version libs.versions.javafxplugin
 }
 
 javafx {
@@ -18,22 +18,22 @@ application {
 }
 
 dependencies {
+    implementation(libs.jna)
+    implementation(libs.jna.platform)
+    implementation(libs.koin.core)
+    implementation(libs.koin.logger.slf4j)
+    implementation(libs.kotlin.logging.jvm)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.kotlin.stdlib.jdk8)
+    implementation(libs.slf4j.api)
+    implementation(libs.slf4j.log4j12)
+    implementation(libs.tornadofx)
     implementation(projects.core)
+    implementation(projects.libraries.gcodeFile)
     implementation(projects.libraries.javafxCommons)
     implementation(projects.libraries.stdlibCommons)
-    implementation(kotlin("stdlib-jdk8"))
-    implementation("no.tornado:tornadofx:1.7.20")
-    implementation("net.java.dev.jna:jna:5.10.0")
-    implementation("net.java.dev.jna:jna-platform:5.10.0")
-    implementation("org.slf4j:slf4j-api:1.7.5")
-    implementation("org.slf4j:slf4j-log4j12:1.7.5")
-    implementation("io.github.microutils:kotlin-logging-jvm:2.0.10")
-    // Koin for Kotlin apps
-    implementation("io.insert-koin:koin-core:3.1.4")
-    implementation("io.insert-koin:koin-logger-slf4j:3.1.4")
-    // Testing
-    testImplementation("io.insert-koin:koin-test:3.1.4")
-    testImplementation(platform("org.junit:junit-bom:5.8.1"))
+    testImplementation(libs.koin.test)
+    testImplementation(platform(libs.junit.bom))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
+    testImplementation(libs.assertk.jvm)
 }

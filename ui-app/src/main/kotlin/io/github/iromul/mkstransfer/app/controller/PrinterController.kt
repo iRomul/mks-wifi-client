@@ -1,6 +1,6 @@
 package io.github.iromul.mkstransfer.app.controller
 
-import io.github.iromul.mkstransfer.app.io.gcode.GCodeFileReader
+import io.github.iromul.gcode.file.GCodeIO
 import io.github.iromul.mkstransfer.app.io.gcode.thumbnails.MksTftThumbnailWriter
 import io.github.iromul.mkstransfer.app.io.gcode.thumbnails.PrusaSlicerEmbeddedThumbnailReader
 import io.github.iromul.mkstransfer.app.io.gcode.thumbnails.Size
@@ -47,7 +47,7 @@ class PrinterController : Controller() {
             fileName = file.name
             fileData = fileBytes
 
-            val gCodeFile = GCodeFileReader.load(fileBytes)
+            val gCodeFile = GCodeIO.buffered(fileBytes)
 
             val prusaThumbnails = PrusaSlicerEmbeddedThumbnailReader(gCodeFile).getAllThumbnails()
 
@@ -65,7 +65,7 @@ class PrinterController : Controller() {
 
                 val stringWriter = StringWriter()
 
-                GCodeFileReader.save(gCodeFile, stringWriter)
+                GCodeIO.write(gCodeFile, stringWriter)
 
                 modifiedFileData = stringWriter.toString().toByteArray()
             }
