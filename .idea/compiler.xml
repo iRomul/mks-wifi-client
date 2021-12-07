@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="11" />
+    <bytecodeTargetLevel target="11">
+      <module name="dependencies" target="17" />
+      <module name="dependencies.main" target="17" />
+      <module name="dependencies.test" target="17" />
+      <module name="mks-wifi-transfer.socket-test-client" target="17" />
+      <module name="mks-wifi-transfer.socket-test-client.main" target="17" />
+      <module name="mks-wifi-transfer.socket-test-client.test" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

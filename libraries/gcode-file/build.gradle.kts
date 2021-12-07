@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-    testImplementation(platform("org.junit:junit-bom:5.8.2"))
+    implementation(libs.kotlin.stdlib.jdk8)
+    testImplementation(platform(libs.junit.bom))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation("io.kotest:kotest-assertions-core:5.0.1")
+    testImplementation(libs.kotest.assertions.core)
 }
