@@ -5,12 +5,10 @@ plugins {
     kotlin("jvm") version libs.versions.kotlin apply false
 }
 
-group = "io.github.iromul.mkstransfer"
-version = "1.0-SNAPSHOT"
-
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
 }
 
 subprojects {

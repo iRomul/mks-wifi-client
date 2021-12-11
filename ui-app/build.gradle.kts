@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     application
     kotlin("jvm")
@@ -15,6 +17,14 @@ application {
         "--add-opens", "javafx.graphics/javafx.scene=ALL-UNNAMED",
         "--add-opens", "javafx.graphics/com.sun.glass.ui=ALL-UNNAMED"
     )
+}
+
+tasks.processResources {
+    filesMatching("**/*.properties") {
+        filter<ReplaceTokens>("tokens" to mapOf(
+            "version" to project.version
+        ))
+    }
 }
 
 dependencies {

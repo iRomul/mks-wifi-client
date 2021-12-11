@@ -2,11 +2,13 @@ package io.github.iromul.mkstransfer.app
 
 import io.github.iromul.commons.lang.userHome
 import io.github.iromul.commons.nio.file.pathOf
+import io.github.iromul.mkstransfer.app.service.AboutService
 import io.github.iromul.mkstransfer.app.service.SendService
 import io.github.iromul.mkstransfer.app.view.MainView
 import javafx.scene.image.Image
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
+import org.koin.fileProperties
 import tornadofx.App
 import tornadofx.DIContainer
 import tornadofx.FX
@@ -16,12 +18,15 @@ import kotlin.reflect.KClass
 
 val beans = module {
     single { SendService() }
+
+    single { AboutService(getProperty("app.version"), "", "") }
 }
 
 class MksWifiUiApp : App(MainView::class) {
 
     init {
         val koinApp = startKoin {
+            fileProperties()
             printLogger()
             modules(beans)
         }

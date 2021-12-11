@@ -55,6 +55,12 @@ class MainView : View(
                 }
             }
 
+            item("About") {
+                whenSelected {
+                    center<AboutView>()
+                }
+            }
+
             item("Quit") {
                 graphic = ImageView().apply {
                     image = Image(resources["/icons/exit to app@20px.png"])
