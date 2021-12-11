@@ -5,11 +5,13 @@ import io.github.iromul.mkstransfer.app.view.styles.DragAndDropStylesheet
 import javafx.geometry.Pos
 import javafx.scene.input.Dragboard
 import javafx.scene.input.TransferMode
-import javafx.scene.text.FontWeight
+import javafx.scene.layout.Priority
+import javafx.scene.text.TextAlignment
 import tornadofx.View
 import tornadofx.addClass
 import tornadofx.addStylesheet
 import tornadofx.gridpane
+import tornadofx.hgrow
 import tornadofx.removeClass
 import tornadofx.style
 import tornadofx.text
@@ -25,19 +27,27 @@ class DragAndDropView : View() {
 
         addClass(DragAndDropStylesheet.dragAndDropPane)
 
+        hgrow = Priority.ALWAYS
+
         useMaxSize = true
         alignment = Pos.CENTER
 
         textflow {
             text("Choose a file") {
-                style {
-                    fontWeight = FontWeight.BOLD
-                }
+                addClass(DragAndDropStylesheet.clickableTextButton)
             }
+
+            text(", ")
+
+            text("choose from catalog") {
+                addClass(DragAndDropStylesheet.clickableTextButton)
+            }
+
             text(" or drag it here")
 
             style {
                 alignment = Pos.CENTER
+                textAlignment = TextAlignment.CENTER
             }
         }
 
@@ -68,7 +78,7 @@ class DragAndDropView : View() {
 
     private fun Dragboard.allowedFilesSequence() =
         files.asSequence()
-            .filter { it.extension in listOf("g", "gcode") }
+            .filter { it.extension in listOf("g", "gcode", "gco", "ngc") }
 
     private fun Dragboard.hasOnlyAllowedFiles() =
         allowedFilesSequence().count() == 1

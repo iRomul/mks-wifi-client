@@ -31,9 +31,9 @@ class MksWifiUiApp : App(MainView::class) {
                 koinApp.koin.get(type)
         }
 
-        addStageIcon(Image(resources["/icons/benchy@64px.png"]))
-        addStageIcon(Image(resources["/icons/benchy@128px.png"]))
-        addStageIcon(Image(resources["/icons/benchy@256px.png"]))
+        addStageIcon(Image(resources["/icons/benchy-orange@64px.png"]))
+        addStageIcon(Image(resources["/icons/benchy-orange@128px.png"]))
+        addStageIcon(Image(resources["/icons/benchy-orange@256px.png"]))
     }
 
     override val configBasePath = pathOf(userHome, ".mks-wifi-transfer")

@@ -4,6 +4,7 @@ import io.github.iromul.commons.javafx.bindings.asBinaryUnit
 import io.github.iromul.commons.javafx.opacity
 import io.github.iromul.commons.lang.requireResource
 import io.github.iromul.mkstransfer.app.controller.PrinterController
+import io.github.iromul.mkstransfer.app.model.settings.printer.PrinterSettingsModel
 import javafx.geometry.Pos
 import javafx.scene.image.Image
 import javafx.scene.paint.Color
@@ -13,6 +14,7 @@ import tornadofx.action
 import tornadofx.assignIfNull
 import tornadofx.button
 import tornadofx.buttonbar
+import tornadofx.enableWhen
 import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
@@ -26,10 +28,12 @@ import tornadofx.textfield
 import tornadofx.titledpane
 import tornadofx.useMaxSize
 import tornadofx.vbox
+import tornadofx.visibleWhen
 
 class FileToUploadView : View() {
 
     private val printerController by inject<PrinterController>()
+    private val printerSettings by inject<PrinterSettingsModel>()
     private val defaultImage = Image(requireResource("/images/no_preview.png") {}.toExternalForm())
 
     override val root = gridpane {
@@ -71,6 +75,9 @@ class FileToUploadView : View() {
             }
 
             titledpane(title = "Upload via Wi-Fi", collapsible = false) {
+                visibleWhen(printerSettings.isMksTftHostUploadMode)
+                enableWhen(printerSettings.isMksTftHostUploadMode)
+
                 form {
                     fieldset {
                         field("Target file name") {

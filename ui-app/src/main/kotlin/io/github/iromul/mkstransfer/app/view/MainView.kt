@@ -17,10 +17,6 @@ class MainView : View(
 
     val printerController by inject<PrinterController>()
 
-    override fun onBeforeShow() {
-
-    }
-
     override val root = borderpane {
         setPrefSize(500.0, 500.0)
 
@@ -55,7 +51,7 @@ class MainView : View(
                 }
 
                 whenSelected {
-                    center<PrinterSettingView>()
+                    center<SettingView>()
                 }
             }
 

@@ -5,8 +5,9 @@ import io.github.iromul.mkstransfer.app.io.gcode.thumbnails.MksTftThumbnailWrite
 import io.github.iromul.mkstransfer.app.io.gcode.thumbnails.PrusaSlicerEmbeddedThumbnailReader
 import io.github.iromul.mkstransfer.app.io.gcode.thumbnails.Size
 import io.github.iromul.mkstransfer.app.model.FileToUpload
-import io.github.iromul.mkstransfer.app.model.PrinterSettingsModel
 import io.github.iromul.mkstransfer.app.model.PrinterStatus
+import io.github.iromul.mkstransfer.app.model.settings.printer.MksTftUploadSettingsModel
+import io.github.iromul.mkstransfer.app.model.settings.printer.PrinterSettingsModel
 import io.github.iromul.mkstransfer.app.service.SendService
 import mu.KLogging
 import tornadofx.Controller
@@ -17,7 +18,9 @@ import java.net.InetAddress
 
 class PrinterController : Controller() {
 
-    val printerSettings = PrinterSettingsModel()
+    private val printerSettings by inject<PrinterSettingsModel>()
+    private val mksTftUploadSettings by inject<MksTftUploadSettingsModel>()
+
     val printerStatus = PrinterStatus("NOT_CONNECTED")
 
     val fileToUpload = FileToUpload()
@@ -27,7 +30,9 @@ class PrinterController : Controller() {
     val sendService by di<SendService>()
 
     fun testConnection() {
-        val ipAddress = printerSettings.ipAddress.value
+        val printerSettings = printerSettings
+
+        val ipAddress = printerSettings.socketAddress.value
 
         runCatching {
             InetAddress.getByName(ipAddress)
@@ -81,7 +86,7 @@ class PrinterController : Controller() {
     }
 
     fun uploadFile() {
-        val address = "http://${printerSettings.ipAddress.get()}:80/upload?X-Filename=${fileToUpload.fileName}"
+        val address = "http://${mksTftUploadSettings.mksUploadAddress.get()}/upload?X-Filename=${fileToUpload.fileName}"
 
         logger.info { "Sending GCode to $address" }
 
