@@ -56,6 +56,10 @@ class MainView : View(
             }
 
             item("About") {
+                graphic = ImageView().apply {
+                    image = Image(resources["/icons/help@20px.png"])
+                }
+
                 whenSelected {
                     center<AboutView>()
                 }
