@@ -32,6 +32,7 @@ dependencies {
     implementation(projects.libraries.gcodeFile)
     implementation(projects.libraries.javafxCommons)
     implementation(projects.libraries.stdlibCommons)
+    implementation(projects.libraries.tornadofxCommons)
     testImplementation(libs.koin.test)
     testImplementation(platform(libs.junit.bom))
     testImplementation("org.junit.jupiter:junit-jupiter")

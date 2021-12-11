@@ -9,6 +9,7 @@ include("core")
 include("libraries:gcode-file")
 include("libraries:javafx-commons")
 include("libraries:stdlib-commons")
+include("libraries:tornadofx-commons")
 include("ui-app")
 
 object Versions {
