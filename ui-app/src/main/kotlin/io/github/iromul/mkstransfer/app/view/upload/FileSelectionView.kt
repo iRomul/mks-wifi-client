@@ -1,5 +1,6 @@
 package io.github.iromul.mkstransfer.app.view.upload
 
+import io.github.iromul.commons.lang.userHome
 import io.github.iromul.mkstransfer.app.controller.PrinterController
 import io.github.iromul.mkstransfer.app.view.styles.MainStylesheet
 import javafx.geometry.HPos
@@ -9,13 +10,17 @@ import javafx.scene.input.Dragboard
 import javafx.scene.input.TransferMode
 import javafx.scene.layout.Priority
 import javafx.scene.text.TextAlignment
+import javafx.stage.FileChooser
 import tornadofx.View
+import tornadofx.action
 import tornadofx.addClass
 import tornadofx.c
+import tornadofx.chooseFile
 import tornadofx.constraintsForRow
 import tornadofx.gridpane
 import tornadofx.gridpaneConstraints
 import tornadofx.hgrow
+import tornadofx.hyperlink
 import tornadofx.px
 import tornadofx.removeClass
 import tornadofx.row
@@ -23,6 +28,7 @@ import tornadofx.style
 import tornadofx.text
 import tornadofx.textflow
 import tornadofx.useMaxSize
+import java.io.File
 
 class FileSelectionView : View() {
 
@@ -44,8 +50,23 @@ class FileSelectionView : View() {
 
         row {
             textflow {
-                text("Choose a file") {
+                hyperlink("Choose a file") {
                     addClass(MainStylesheet.dragAndDropText, MainStylesheet.dragAndDropClickableText)
+                }.action {
+                    val files = chooseFile(
+                        "Select G-Code file",
+                        arrayOf(
+                            FileChooser.ExtensionFilter(
+                                "G-Code files",
+                                AllowedGCCodeExtensions.allowedExtensionsMask
+                            )
+                        ),
+                        File(userHome)
+                    )
+
+                    files.firstOrNull()?.let {
+                        printerController.setFileToUpload(it)
+                    }
                 }
 
                 text(", ") {
@@ -105,9 +126,9 @@ class FileSelectionView : View() {
         }
 
         setOnDragDropped { ev ->
-           val file = ev.dragboard
-               .getOnlyAllowedFiles()
-               ?: throw IllegalStateException("File was accepted by setOnDragOver, but not passed to setOnDragDropped")
+            val file = ev.dragboard
+                .getOnlyAllowedFiles()
+                ?: throw IllegalStateException("File was accepted by setOnDragOver, but not passed to setOnDragDropped")
 
             printerController.setFileToUpload(file)
         }
@@ -115,7 +136,7 @@ class FileSelectionView : View() {
 
     private fun Dragboard.allowedFilesSequence() =
         files.asSequence()
-            .filter { it.extension in listOf("g", "gcode", "gco", "ngc") }
+            .filter { it.extension in AllowedGCCodeExtensions.allowedExtensions }
 
     private fun Dragboard.hasOnlyAllowedFiles() =
         allowedFilesSequence().count() == 1
