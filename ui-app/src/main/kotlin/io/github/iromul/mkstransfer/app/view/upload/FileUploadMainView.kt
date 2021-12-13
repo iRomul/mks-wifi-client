@@ -7,26 +7,26 @@ import tornadofx.hbox
 import tornadofx.onChange
 import tornadofx.useMaxSize
 
-class GCodeUploadView : View() {
+class FileUploadMainView : View() {
 
-    private val dragAndDropView by inject<DragAndDropView>()
-    private val fileToUploadView by inject<FileToUploadView>()
+    private val fileSelectionView by inject<FileSelectionView>()
+    private val filePreviewView by inject<FilePreviewView>()
     private val printerController by inject<PrinterController>()
 
     override val root = hbox {
         useMaxSize = true
 
-        addChildIfPossible(dragAndDropView.root)
+        addChildIfPossible(fileSelectionView.root)
 
-        val fileToUpload = printerController.fileToUpload
+        val fileToUpload = printerController.selectedFile
 
         fileToUpload.hasFileProperty.onChange { hasFile ->
             if (hasFile) {
-                children.remove(dragAndDropView.root)
-                addChildIfPossible(fileToUploadView.root)
+                children.remove(fileSelectionView.root)
+                addChildIfPossible(filePreviewView.root)
             } else {
-                children.remove(fileToUploadView.root)
-                addChildIfPossible(dragAndDropView.root)
+                children.remove(filePreviewView.root)
+                addChildIfPossible(fileSelectionView.root)
             }
         }
     }

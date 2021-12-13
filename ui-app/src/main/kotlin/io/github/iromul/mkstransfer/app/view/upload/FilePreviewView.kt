@@ -6,6 +6,7 @@ import io.github.iromul.commons.lang.requireResource
 import io.github.iromul.commons.tornadofx.labeledseparator
 import io.github.iromul.mkstransfer.app.controller.PrinterController
 import io.github.iromul.mkstransfer.app.model.settings.printer.PrinterSettingsModel
+import io.github.iromul.mkstransfer.app.model.upload.UploadStatus
 import javafx.geometry.Pos
 import javafx.scene.image.Image
 import javafx.scene.paint.Color
@@ -23,6 +24,7 @@ import tornadofx.gridpane
 import tornadofx.imageview
 import tornadofx.stackpane
 import tornadofx.stackpaneConstraints
+import tornadofx.stringBinding
 import tornadofx.style
 import tornadofx.text
 import tornadofx.textfield
@@ -30,14 +32,15 @@ import tornadofx.useMaxSize
 import tornadofx.vbox
 import tornadofx.visibleWhen
 
-class FileToUploadView : View() {
+class FilePreviewView : View() {
 
     private val printerController by inject<PrinterController>()
     private val printerSettings by inject<PrinterSettingsModel>()
     private val defaultImage = Image(requireResource("/images/no_preview.png") {}.toExternalForm())
 
     override val root = gridpane {
-        val fileToUpload = printerController.fileToUpload
+        val fileToUpload = printerController.selectedFile
+        val fileUploadStatus = printerController.fileUploadStatus
 
         useMaxSize = true
         alignment = Pos.CENTER
@@ -83,6 +86,22 @@ class FileToUploadView : View() {
                 fieldset {
                     field("Target file name") {
                         textfield(fileToUpload.fileNameProperty)
+                    }
+
+                    field("Upload status") {
+                        visibleWhen(fileUploadStatus.statusProperty.isNotEqualTo(UploadStatus.IDLE))
+
+                        val uploadStatusText = fileUploadStatus.statusProperty.stringBinding {
+                            when (it) {
+                                UploadStatus.IDLE -> "Idle"
+                                UploadStatus.UPLOADING -> "Uploading..."
+                                UploadStatus.SUCCESS -> "File successfully uploaded"
+                                UploadStatus.FAILED -> "File uploading failed: ${fileUploadStatus.error}"
+                                null -> "Error"
+                            }
+                        }
+
+                        text(uploadStatusText)
                     }
                 }
 

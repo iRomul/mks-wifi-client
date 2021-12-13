@@ -1,4 +1,4 @@
-package io.github.iromul.mkstransfer.app.model
+package io.github.iromul.mkstransfer.app.model.upload
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
@@ -8,7 +8,7 @@ import tornadofx.getValue
 import tornadofx.integerBinding
 import tornadofx.setValue
 
-class FileToUpload(
+class SelectedFile(
     fileData: ByteArray? = null,
     modifiedFileData: ByteArray? = null,
     fileName: String? = null,
@@ -22,8 +22,8 @@ class FileToUpload(
     val fileDataProperty = SimpleObjectProperty(fileData)
     var fileData by fileDataProperty
 
-    val modifiedFileDataProperty = SimpleObjectProperty(modifiedFileData)
-    var modifiedFileData by modifiedFileDataProperty
+    val processedFileDataProperty = SimpleObjectProperty(modifiedFileData)
+    var precessedFileData by processedFileDataProperty
 
     val fileNameProperty = SimpleStringProperty(fileName)
     var fileName by fileNameProperty
@@ -35,15 +35,15 @@ class FileToUpload(
     val fileSize by fileSizeProperty
 
     val readyToUpload: Boolean
-        get() = hasFile && fileName.isNullOrEmpty()
+        get() = hasFile && !fileName.isNullOrEmpty()
 
     val actualFileToUpload: ByteArray
-        get() = modifiedFileData ?: requireNotNull(fileData)
+        get() = precessedFileData ?: requireNotNull(fileData)
 
     fun clearFile() {
         hasFile = false
         fileData = null
-        modifiedFileData = null
+        precessedFileData = null
         fileName = null
         fileThumbnail = null
     }

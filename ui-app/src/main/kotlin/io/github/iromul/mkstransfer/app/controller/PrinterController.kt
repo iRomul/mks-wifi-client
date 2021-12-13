@@ -4,10 +4,12 @@ import io.github.iromul.gcode.file.GCodeIO
 import io.github.iromul.mkstransfer.app.io.gcode.thumbnails.MksTftThumbnailWriter
 import io.github.iromul.mkstransfer.app.io.gcode.thumbnails.PrusaSlicerEmbeddedThumbnailReader
 import io.github.iromul.mkstransfer.app.io.gcode.thumbnails.Size
-import io.github.iromul.mkstransfer.app.model.FileToUpload
 import io.github.iromul.mkstransfer.app.model.PrinterStatus
 import io.github.iromul.mkstransfer.app.model.settings.printer.MksTftUploadSettingsModel
 import io.github.iromul.mkstransfer.app.model.settings.printer.PrinterSettingsModel
+import io.github.iromul.mkstransfer.app.model.upload.FileUploadStatus
+import io.github.iromul.mkstransfer.app.model.upload.SelectedFile
+import io.github.iromul.mkstransfer.app.model.upload.UploadStatus
 import io.github.iromul.mkstransfer.app.service.SendService
 import mu.KLogging
 import tornadofx.Controller
@@ -23,7 +25,8 @@ class PrinterController : Controller() {
 
     val printerStatus = PrinterStatus("NOT_CONNECTED")
 
-    val fileToUpload = FileToUpload()
+    val selectedFile = SelectedFile()
+    val fileUploadStatus = FileUploadStatus(UploadStatus.IDLE, null)
 
     val api: Rest by inject()
 
@@ -48,7 +51,7 @@ class PrinterController : Controller() {
     fun setFileToUpload(file: File) {
         val fileBytes = file.readBytes()
 
-        with(fileToUpload) {
+        with(selectedFile) {
             fileName = file.name
             fileData = fileBytes
 
@@ -72,7 +75,7 @@ class PrinterController : Controller() {
 
                 GCodeIO.write(gCodeFile, stringWriter)
 
-                modifiedFileData = stringWriter.toString().toByteArray()
+                precessedFileData = stringWriter.toString().toByteArray()
             }
 
             hasFile = true
@@ -82,15 +85,20 @@ class PrinterController : Controller() {
     }
 
     fun cancelFileUpload() {
-        fileToUpload.clearFile()
+        fileUploadStatus.status = UploadStatus.IDLE
+        fileUploadStatus.error = null
+
+        selectedFile.clearFile()
     }
 
     fun uploadFile() {
-        val address = "http://${mksTftUploadSettings.mksUploadAddress.get()}/upload?X-Filename=${fileToUpload.fileName}"
+        val address = "http://${mksTftUploadSettings.mksUploadAddress.get()}/upload?X-Filename=${selectedFile.fileName}"
 
         logger.info { "Sending GCode to $address" }
 
-        val r = api.post(address, fileToUpload.actualFileToUpload.inputStream()) {
+        fileUploadStatus.status = UploadStatus.UPLOADING
+
+        val r = api.post(address, selectedFile.actualFileToUpload.inputStream()) {
             it.addHeader("Content-Type", "application/octet-stream")
             it.addHeader("Connection", "keep-alive")
         }
@@ -98,9 +106,17 @@ class PrinterController : Controller() {
         try {
             if (r.ok()) {
                 logger.info { "File sent successfully!" }
+
+                fileUploadStatus.status = UploadStatus.SUCCESS
             } else {
                 logger.error { "Service invocation is failed with code ${r.statusCode} and message: ${r.reason}" }
+
+                fileUploadStatus.status = UploadStatus.FAILED
+                fileUploadStatus.error = "${r.statusCode}: ${r.reason}"
             }
+        } catch (e: Throwable) {
+            fileUploadStatus.status = UploadStatus.FAILED
+            fileUploadStatus.error = e.message
         } finally {
             r.consume()
         }

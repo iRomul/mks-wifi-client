@@ -24,7 +24,7 @@ import tornadofx.text
 import tornadofx.textflow
 import tornadofx.useMaxSize
 
-class DragAndDropView : View() {
+class FileSelectionView : View() {
 
     private val printerController by inject<PrinterController>()
 
@@ -35,12 +35,6 @@ class DragAndDropView : View() {
 
         useMaxSize = true
         alignment = Pos.CENTER
-
-//        (0..2).forEach {
-//            constraintsForRow(it).apply {
-//                percentHeight = 100.0 / 3
-//            }
-//        }
 
         constraintsForRow(0).percentHeight = 40.0
         constraintsForRow(1).percentHeight = 20.0

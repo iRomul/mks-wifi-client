@@ -4,7 +4,7 @@ import io.github.iromul.mkstransfer.app.controller.PrinterController
 import io.github.iromul.mkstransfer.app.view.components.windowToolbar
 import io.github.iromul.mkstransfer.app.view.control.PrinterControlView
 import io.github.iromul.mkstransfer.app.view.settings.SettingView
-import io.github.iromul.mkstransfer.app.view.upload.GCodeUploadView
+import io.github.iromul.mkstransfer.app.view.upload.FileUploadMainView
 import javafx.application.Platform
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
@@ -40,7 +40,7 @@ class MainView : View(
                 }
 
                 whenSelected {
-                    center<GCodeUploadView>()
+                    center<FileUploadMainView>()
                 }
             }
 
@@ -88,6 +88,6 @@ class MainView : View(
             }
         }
 
-        center<GCodeUploadView>()
+        center<FileUploadMainView>()
     }
 }
