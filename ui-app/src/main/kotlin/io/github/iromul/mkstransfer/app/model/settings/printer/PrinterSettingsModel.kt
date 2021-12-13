@@ -3,6 +3,7 @@ package io.github.iromul.mkstransfer.app.model.settings.printer
 import io.github.iromul.commons.javafx.beans.property.simpleObjectProperty
 import io.github.iromul.commons.javafx.beans.property.simpleStringProperty
 import io.github.iromul.commons.tornadofx.ConfigKeys
+import javafx.beans.binding.BooleanBinding
 import tornadofx.ItemViewModel
 
 class PrinterSettingsModel : ItemViewModel<PrinterSettings>() {
@@ -23,7 +24,7 @@ class PrinterSettingsModel : ItemViewModel<PrinterSettings>() {
     val printHostUploadMode =
         bind { simpleObjectProperty(item?.printHostUploadMode, PrinterSettings::printHostUploadMode, printHostUploadModeKey) }
 
-    val isMksTftHostUploadMode =
+    val isMksTftHostUploadMode: BooleanBinding =
         printHostUploadMode.isEqualTo(PrintHostUploadMode.MKS_TFT)
 
     override fun onCommit() {

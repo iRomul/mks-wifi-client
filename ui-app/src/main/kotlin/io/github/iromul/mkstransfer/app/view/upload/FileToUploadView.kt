@@ -3,6 +3,7 @@ package io.github.iromul.mkstransfer.app.view.upload
 import io.github.iromul.commons.javafx.bindings.asBinaryUnit
 import io.github.iromul.commons.javafx.opacity
 import io.github.iromul.commons.lang.requireResource
+import io.github.iromul.commons.tornadofx.labeledseparator
 import io.github.iromul.mkstransfer.app.controller.PrinterController
 import io.github.iromul.mkstransfer.app.model.settings.printer.PrinterSettingsModel
 import javafx.geometry.Pos
@@ -25,7 +26,6 @@ import tornadofx.stackpaneConstraints
 import tornadofx.style
 import tornadofx.text
 import tornadofx.textfield
-import tornadofx.titledpane
 import tornadofx.useMaxSize
 import tornadofx.vbox
 import tornadofx.visibleWhen
@@ -74,31 +74,31 @@ class FileToUploadView : View() {
                 }
             }
 
-            titledpane(title = "Upload via Wi-Fi", collapsible = false) {
+            form {
                 visibleWhen(printerSettings.isMksTftHostUploadMode)
                 enableWhen(printerSettings.isMksTftHostUploadMode)
 
-                form {
-                    fieldset {
-                        field("Target file name") {
-                            textfield(fileToUpload.fileNameProperty)
-                        }
+                labeledseparator("Upload via Wi-Fi")
+
+                fieldset {
+                    field("Target file name") {
+                        textfield(fileToUpload.fileNameProperty)
                     }
-
-                    buttonbar {
-                        button("Cancel").action {
-                            printerController.cancelFileUpload()
-                        }
-
-                        button("Send").action {
-                            runAsync {
-                                printerController.uploadFile()
-                            }
-                        }
-                    }
-
-                    add(RestProgressBar::class)
                 }
+
+                buttonbar {
+                    button("Cancel").action {
+                        printerController.cancelFileUpload()
+                    }
+
+                    button("Send").action {
+                        runAsync {
+                            printerController.uploadFile()
+                        }
+                    }
+                }
+
+                add(RestProgressBar::class)
             }
         }
     }

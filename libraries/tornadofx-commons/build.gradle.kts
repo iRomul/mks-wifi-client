@@ -9,6 +9,7 @@ javafx {
 }
 
 dependencies {
+    implementation(projects.libraries.javafxCommons)
     implementation(projects.libraries.stdlibCommons)
     implementation(libs.tornadofx)
 }

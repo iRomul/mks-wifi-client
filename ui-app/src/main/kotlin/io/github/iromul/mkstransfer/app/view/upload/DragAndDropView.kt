@@ -1,18 +1,24 @@
 package io.github.iromul.mkstransfer.app.view.upload
 
 import io.github.iromul.mkstransfer.app.controller.PrinterController
-import io.github.iromul.mkstransfer.app.view.styles.DragAndDropStylesheet
+import io.github.iromul.mkstransfer.app.view.styles.MainStylesheet
+import javafx.geometry.HPos
 import javafx.geometry.Pos
+import javafx.geometry.VPos
 import javafx.scene.input.Dragboard
 import javafx.scene.input.TransferMode
 import javafx.scene.layout.Priority
 import javafx.scene.text.TextAlignment
 import tornadofx.View
 import tornadofx.addClass
-import tornadofx.addStylesheet
+import tornadofx.c
+import tornadofx.constraintsForRow
 import tornadofx.gridpane
+import tornadofx.gridpaneConstraints
 import tornadofx.hgrow
+import tornadofx.px
 import tornadofx.removeClass
+import tornadofx.row
 import tornadofx.style
 import tornadofx.text
 import tornadofx.textflow
@@ -23,40 +29,77 @@ class DragAndDropView : View() {
     private val printerController by inject<PrinterController>()
 
     override val root = gridpane {
-        addStylesheet(DragAndDropStylesheet::class)
-
-        addClass(DragAndDropStylesheet.dragAndDropPane)
+        addClass(MainStylesheet.dragAndDropPane)
 
         hgrow = Priority.ALWAYS
 
         useMaxSize = true
         alignment = Pos.CENTER
 
-        textflow {
-            text("Choose a file") {
-                addClass(DragAndDropStylesheet.clickableTextButton)
+//        (0..2).forEach {
+//            constraintsForRow(it).apply {
+//                percentHeight = 100.0 / 3
+//            }
+//        }
+
+        constraintsForRow(0).percentHeight = 40.0
+        constraintsForRow(1).percentHeight = 20.0
+        constraintsForRow(2).percentHeight = 40.0
+
+        row()
+
+        row {
+            textflow {
+                text("Choose a file") {
+                    addClass(MainStylesheet.dragAndDropText, MainStylesheet.dragAndDropClickableText)
+                }
+
+                text(", ") {
+                    addClass(MainStylesheet.dragAndDropText)
+                }
+
+                text("choose from catalog") {
+                    addClass(MainStylesheet.dragAndDropText, MainStylesheet.dragAndDropClickableText)
+                }
+
+                text(" or drag it here") {
+                    addClass(MainStylesheet.dragAndDropText)
+                }
+
+                style(append = true) {
+                    textAlignment = TextAlignment.CENTER
+                }
+
+                gridpaneConstraints {
+                    vAlignment = VPos.CENTER
+                    fillHeight = true
+                }
             }
+        }
 
-            text(", ")
+        row {
+            text("\ue2c6") {
+                style {
+                    fontFamily = "Material Icons Outlined"
+                    fill = c("#A9B7C6")
+                    fontSize = 72.px
+                }
 
-            text("choose from catalog") {
-                addClass(DragAndDropStylesheet.clickableTextButton)
-            }
+                gridpaneConstraints {
+                    vAlignment = VPos.TOP
+                    hAlignment = HPos.CENTER
+                }
 
-            text(" or drag it here")
-
-            style {
-                alignment = Pos.CENTER
-                textAlignment = TextAlignment.CENTER
+                alignment = Pos.TOP_CENTER
             }
         }
 
         setOnDragEntered {
-            addClass(DragAndDropStylesheet.dragAndDropPaneIsDragover)
+            addClass(MainStylesheet.dragAndDropPaneIsDragover)
         }
 
         setOnDragExited {
-            removeClass(DragAndDropStylesheet.dragAndDropPaneIsDragover)
+            removeClass(MainStylesheet.dragAndDropPaneIsDragover)
         }
 
         setOnDragOver { ev ->

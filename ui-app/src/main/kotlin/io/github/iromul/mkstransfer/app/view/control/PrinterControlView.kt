@@ -1,4 +1,4 @@
-package io.github.iromul.mkstransfer.app.view
+package io.github.iromul.mkstransfer.app.view.control
 
 import tornadofx.View
 import tornadofx.borderpane

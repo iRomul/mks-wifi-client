@@ -1,11 +1,16 @@
 package io.github.iromul.mkstransfer.app
 
+import io.github.iromul.commons.lang.requireResource
 import io.github.iromul.commons.lang.userHome
 import io.github.iromul.commons.nio.file.pathOf
 import io.github.iromul.mkstransfer.app.service.AboutService
 import io.github.iromul.mkstransfer.app.service.SendService
 import io.github.iromul.mkstransfer.app.view.MainView
+import io.github.iromul.mkstransfer.app.view.styles.MainStylesheet
 import javafx.scene.image.Image
+import javafx.scene.text.Font
+import javafx.stage.Stage
+import javafx.stage.StageStyle
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import org.koin.fileProperties
@@ -22,7 +27,7 @@ val beans = module {
     single { AboutService(getProperty("app.version"), "", "") }
 }
 
-class MksWifiUiApp : App(MainView::class) {
+class MksWifiUiApp : App(MainView::class, MainStylesheet::class) {
 
     init {
         val koinApp = startKoin {
@@ -39,6 +44,13 @@ class MksWifiUiApp : App(MainView::class) {
         addStageIcon(Image(resources["/icons/benchy-orange@64px.png"]))
         addStageIcon(Image(resources["/icons/benchy-orange@128px.png"]))
         addStageIcon(Image(resources["/icons/benchy-orange@256px.png"]))
+
+        Font.loadFonts(requireResource("/icons/MaterialIcons-Regular.ttf").toExternalForm(), 0.0)
+    }
+
+    override fun start(stage: Stage) {
+        stage.initStyle(StageStyle.UNDECORATED)
+        super.start(stage)
     }
 
     override val configBasePath = pathOf(userHome, ".mks-wifi-transfer")
