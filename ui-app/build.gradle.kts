@@ -41,6 +41,7 @@ dependencies {
     implementation(projects.core)
     implementation(projects.libraries.gcodeFile)
     implementation(projects.libraries.javafxCommons)
+    implementation(projects.libraries.javafxMaterialIcons)
     implementation(projects.libraries.stdlibCommons)
     implementation(projects.libraries.tornadofxCommons)
     testImplementation(libs.koin.test)

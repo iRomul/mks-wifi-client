@@ -1,17 +1,23 @@
 package io.github.iromul.mkstransfer.app.view.upload
 
+import io.github.iromul.commons.javafx.materialdesign.icons.MaterialIconsOutlined
 import io.github.iromul.mkstransfer.app.controller.PrinterController
-import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleObjectProperty
+import javafx.scene.control.Label
+import javafx.scene.layout.Priority
 import tornadofx.View
 import tornadofx.action
 import tornadofx.addChildIfPossible
+import tornadofx.addClass
 import tornadofx.button
 import tornadofx.getValue
+import tornadofx.hbox
 import tornadofx.onChange
-import tornadofx.pane
 import tornadofx.setValue
 import tornadofx.useMaxSize
 import tornadofx.vbox
+import tornadofx.vboxConstraints
+import tornadofx.vgrow
 import tornadofx.visibleWhen
 
 class FileUploadMainView : View() {
@@ -20,36 +26,50 @@ class FileUploadMainView : View() {
     private val filePreviewView by inject<FilePreviewView>()
     private val printerController by inject<PrinterController>()
 
-    private val showBackProperty = SimpleBooleanProperty(false)
-    private var showBack by showBackProperty
+    private val viewStateProperty = SimpleObjectProperty(FileUploadMainViewState.INITIAL)
+    private var viewState by viewStateProperty
 
     override val root = vbox {
         useMaxSize = true
 
-        addChildIfPossible(fileSelectionView.root)
-
-        pane {
-            visibleWhen(showBackProperty)
-
-            button("<- back").action {
-                showBack = false
-            }
-        }
-
         val fileToUpload = printerController.selectedFile
 
         fileToUpload.hasFileProperty.onChange { hasFile ->
-            if (hasFile) {
-                showBack = true
-
-                children.remove(fileSelectionView.root)
-                addChildIfPossible(filePreviewView.root)
+            viewState = if (hasFile) {
+                FileUploadMainViewState.FILE_PREVIEW
             } else {
-                showBack = false
-
-                children.remove(filePreviewView.root)
-                addChildIfPossible(fileSelectionView.root)
+                FileUploadMainViewState.FILE_SELECTION
             }
         }
+
+        hbox {
+            managedProperty().bind(visibleProperty())
+            visibleWhen(viewStateProperty.isNotEqualTo(FileUploadMainViewState.FILE_SELECTION))
+
+            button(text = "Back", graphic = Label(MaterialIconsOutlined.arrowBack).apply { addClass(MaterialIconsOutlined.className) }) {
+                action {
+                    fileToUpload.clearFile()
+                    viewState = FileUploadMainViewState.FILE_SELECTION
+                }
+            }
+        }
+
+        hbox {
+            vboxConstraints {
+                vgrow = Priority.ALWAYS
+            }
+
+            viewStateProperty.onChange { state ->
+                children.clear()
+
+                when (state) {
+                    FileUploadMainViewState.FILE_SELECTION -> addChildIfPossible(fileSelectionView.root)
+                    FileUploadMainViewState.FILE_PREVIEW -> addChildIfPossible(filePreviewView.root)
+                    else -> error("Impossible transition")
+                }
+            }
+        }
+
+        viewState = FileUploadMainViewState.FILE_SELECTION
     }
 }

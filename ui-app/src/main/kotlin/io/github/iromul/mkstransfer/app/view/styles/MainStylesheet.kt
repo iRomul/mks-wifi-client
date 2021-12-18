@@ -9,7 +9,7 @@ import tornadofx.Stylesheet
 import tornadofx.box
 import tornadofx.c
 import tornadofx.cssclass
-import tornadofx.loadFont
+import tornadofx.importStylesheet
 import tornadofx.multi
 import tornadofx.px
 
@@ -26,46 +26,22 @@ class MainStylesheet : Stylesheet(
     }
 
     init {
-        loadFont("/icons/MaterialIcons-Regular.ttf", 16.0)
-        loadFont("/icons/MaterialIconsOutlined-Regular.otf", 16.0)
+        importStylesheet("/materialdesign/icons/materialdesign-icons.css")
 
         star {
             baseColor = c("#3c3f41")
-//            backgroundColor = multi(c("#3c3f41"))
             borderRadius = multi(box(0.px))
             borderStyle = multi(BorderStrokeStyle.NONE)
         }
 
-        // .tab-pane
-        //	.tab-content-area
-        //	.tab-header-area
-        //		.tab-header-background
-        //		.headers-region
-        //			.tab
-        //				.tab-container
-        //					.tab-label
-        //						.text
-        //					.focus-indicator
+        scrollPane {
+            borderStyle = multi(BorderStrokeStyle.NONE)
+            borderColor = multi(box(TRANSPARENT))
+            backgroundColor = multi(TRANSPARENT)
 
-        tabPane {
-            tabHeaderArea {
-                tabHeaderBackground {
-                    backgroundColor = multi(c("#3c3f41"))
-                }
-
-                tab {
-                    backgroundColor = multi(Color.RED)
-
-                    and(top) {
-                        borderRadius = multi(box(0.px))
-                        borderStyle = multi(BorderStrokeStyle.NONE)
-
-                        and(selected) {
-                            borderRadius = multi(box(0.px))
-                            borderStyle = multi(BorderStrokeStyle.NONE)
-                        }
-                    }
-                }
+            viewport {
+                borderStyle = multi(BorderStrokeStyle.NONE)
+                borderColor = multi(box(TRANSPARENT))
             }
         }
 

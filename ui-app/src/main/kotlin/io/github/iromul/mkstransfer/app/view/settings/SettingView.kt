@@ -1,7 +1,6 @@
 package io.github.iromul.mkstransfer.app.view.settings
 
 import io.github.iromul.commons.tornadofx.labeledseparator
-import io.github.iromul.mkstransfer.app.model.settings.PreferencesModel
 import io.github.iromul.mkstransfer.app.model.settings.printer.MksTftUploadSettingsModel
 import io.github.iromul.mkstransfer.app.model.settings.printer.PrintHostUploadMode
 import io.github.iromul.mkstransfer.app.model.settings.printer.PrinterSettingsModel
@@ -15,90 +14,61 @@ import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
 import tornadofx.required
-import tornadofx.tab
-import tornadofx.tabpane
 import tornadofx.textfield
 import tornadofx.toObservable
 import tornadofx.vbox
 
 class SettingView : View() {
 
-    private val preferences by inject<PreferencesModel>()
     private val printerSettings by inject<PrinterSettingsModel>()
     private val mksTftUploadSettingsModel by inject<MksTftUploadSettingsModel>()
 
-    override val root = tabpane {
-        tab("Preferences") {
-            isClosable = false
+    override val root = vbox {
+        form {
+            labeledseparator("Printer settings")
 
-            vbox {
-                form {
-                    labeledseparator("Application preferences")
+            fieldset {
+                field("Printer name") {
+                    textfield(printerSettings.printerName).required()
+                }
 
-                    fieldset {
-                        field("Catalog path") {
-                            textfield(preferences.catalogPath)
-                        }
-                    }
-
-                    buttonbar {
-                        button("Save")
-                    }
+                field("Socket address") {
+                    textfield(printerSettings.socketAddress).required()
                 }
             }
         }
 
-        tab("Printer Settings") {
-            isClosable = false
+        form {
+            labeledseparator("Print host upload")
 
-            vbox {
-                form {
-                    labeledseparator("Printer settings")
-
-                    fieldset {
-                        field("Printer name") {
-                            textfield(printerSettings.printerName).required()
-                        }
-
-                        field("Socket address") {
-                            textfield(printerSettings.socketAddress).required()
-                        }
+            fieldset {
+                field("Upload host mode") {
+                    combobox<PrintHostUploadMode>(printerSettings.printHostUploadMode) {
+                        items = PrintHostUploadMode.values().toList().toObservable()
                     }
                 }
+            }
 
-                form {
-                    labeledseparator("Print host upload")
+            val mksTftMode = printerSettings.printHostUploadMode.isEqualTo(PrintHostUploadMode.MKS_TFT)
 
-                    fieldset {
-                        field("Upload host mode") {
-                            combobox<PrintHostUploadMode>(printerSettings.printHostUploadMode) {
-                                items = PrintHostUploadMode.values().toList().toObservable()
-                            }
-                        }
-                    }
+            fieldset {
+                enableWhen(mksTftMode)
 
-                    val mksTftMode = printerSettings.printHostUploadMode.isEqualTo(PrintHostUploadMode.MKS_TFT)
+                field("MKS Upload address") {
+                    textfield(mksTftUploadSettingsModel.mksUploadAddress).required()
+                }
 
-                    fieldset {
-                        enableWhen(mksTftMode)
+                field("G-code thumbnails") {
+                    textfield(mksTftUploadSettingsModel.gcodeThumbnails)
+                }
+            }
 
-                        field("MKS Upload address") {
-                            textfield(mksTftUploadSettingsModel.mksUploadAddress).required()
-                        }
+            buttonbar {
+                button("Save").action {
+                    printerSettings.commit()
 
-                        field("G-code thumbnails") {
-                            textfield(mksTftUploadSettingsModel.gcodeThumbnails)
-                        }
-                    }
-
-                    buttonbar {
-                        button("Save").action {
-                            printerSettings.commit()
-
-                            if (printerSettings.printHostUploadMode.value == PrintHostUploadMode.MKS_TFT) {
-                                mksTftUploadSettingsModel.commit()
-                            }
-                        }
+                    if (printerSettings.printHostUploadMode.value == PrintHostUploadMode.MKS_TFT) {
+                        mksTftUploadSettingsModel.commit()
                     }
                 }
             }

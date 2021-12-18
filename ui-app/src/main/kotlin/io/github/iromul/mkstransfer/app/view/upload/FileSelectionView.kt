@@ -1,5 +1,6 @@
 package io.github.iromul.mkstransfer.app.view.upload
 
+import io.github.iromul.commons.javafx.materialdesign.icons.MaterialIcons
 import io.github.iromul.commons.lang.userHome
 import io.github.iromul.mkstransfer.app.controller.PrinterController
 import io.github.iromul.mkstransfer.app.view.styles.MainStylesheet
@@ -53,28 +54,36 @@ class FileSelectionView : View() {
                 hyperlink("Choose a file") {
                     addClass(MainStylesheet.dragAndDropText, MainStylesheet.dragAndDropClickableText)
                 }.action {
-                    val files = chooseFile(
-                        "Select G-Code file",
+                    val lastDir =
+                        config.string("last_dir_path")?.let(::File)
+
+                    val rootDir = if (lastDir != null && lastDir.exists() &&  lastDir.isDirectory && lastDir.canRead()) {
+                        lastDir
+                    } else {
+                        File(userHome)
+                    }
+
+                    val selectedFile = chooseFile(
+                        "Select G-code file",
                         arrayOf(
                             FileChooser.ExtensionFilter(
-                                "G-Code files",
+                                "G-code files",
                                 AllowedGCCodeExtensions.allowedExtensionsMask
                             )
                         ),
-                        File(userHome)
-                    )
+                        rootDir
+                    ).firstOrNull()
 
-                    files.firstOrNull()?.let {
+                    selectedFile?.let {
+                        val selectedFileDir = selectedFile.parentFile
+
+                        if (selectedFileDir.exists() && selectedFileDir.isDirectory && selectedFileDir.canRead()) {
+                            config["last_dir_path"] = selectedFileDir.absolutePath
+                            config.save()
+                        }
+
                         printerController.setFileToUpload(it)
                     }
-                }
-
-                text(", ") {
-                    addClass(MainStylesheet.dragAndDropText)
-                }
-
-                text("choose from catalog") {
-                    addClass(MainStylesheet.dragAndDropText, MainStylesheet.dragAndDropClickableText)
                 }
 
                 text(" or drag it here") {
@@ -93,7 +102,7 @@ class FileSelectionView : View() {
         }
 
         row {
-            text("\ue2c6") {
+            text(MaterialIcons.fileUpload) {
                 style {
                     fontFamily = "Material Icons Outlined"
                     fill = c("#A9B7C6")

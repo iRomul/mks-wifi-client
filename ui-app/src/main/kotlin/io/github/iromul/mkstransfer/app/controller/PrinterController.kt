@@ -94,7 +94,7 @@ class PrinterController : Controller() {
     fun uploadFile() {
         val address = "http://${mksTftUploadSettings.mksUploadAddress.get()}/upload?X-Filename=${selectedFile.fileName}"
 
-        logger.info { "Sending GCode to $address" }
+        logger.info { "Sending G-code to $address" }
 
         fileUploadStatus.status = UploadStatus.UPLOADING
 

@@ -1,6 +1,7 @@
 package io.github.iromul.mkstransfer.app.view.styles
 
 import javafx.scene.paint.Color
+import javafx.scene.text.FontWeight
 import tornadofx.Stylesheet
 import tornadofx.box
 import tornadofx.c
@@ -23,6 +24,7 @@ class WindowToolbarStylesheet : Stylesheet() {
 
             title {
                 fill = c("#afb1b3")
+                fontWeight = FontWeight.BOLD
             }
 
             actionButton {

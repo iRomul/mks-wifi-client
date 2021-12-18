@@ -1,15 +1,14 @@
 package io.github.iromul.mkstransfer.app.view.upload
 
 import io.github.iromul.commons.javafx.bindings.asBinaryUnit
-import io.github.iromul.commons.javafx.opacity
 import io.github.iromul.commons.lang.requireResource
 import io.github.iromul.commons.tornadofx.labeledseparator
 import io.github.iromul.mkstransfer.app.controller.PrinterController
 import io.github.iromul.mkstransfer.app.model.settings.printer.PrinterSettingsModel
 import io.github.iromul.mkstransfer.app.model.upload.UploadStatus
-import javafx.geometry.Pos
+import javafx.scene.control.ScrollPane
 import javafx.scene.image.Image
-import javafx.scene.paint.Color
+import javafx.scene.layout.Priority
 import tornadofx.RestProgressBar
 import tornadofx.View
 import tornadofx.action
@@ -20,12 +19,12 @@ import tornadofx.enableWhen
 import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
-import tornadofx.gridpane
+import tornadofx.hboxConstraints
+import tornadofx.hgrow
 import tornadofx.imageview
-import tornadofx.stackpane
-import tornadofx.stackpaneConstraints
+import tornadofx.label
+import tornadofx.scrollpane
 import tornadofx.stringBinding
-import tornadofx.style
 import tornadofx.text
 import tornadofx.textfield
 import tornadofx.useMaxSize
@@ -38,41 +37,42 @@ class FilePreviewView : View() {
     private val printerSettings by inject<PrinterSettingsModel>()
     private val defaultImage = Image(requireResource("/images/no_preview.png") {}.toExternalForm())
 
-    override val root = gridpane {
-        val fileToUpload = printerController.selectedFile
-        val fileUploadStatus = printerController.fileUploadStatus
+    override val root = scrollpane(fitToWidth = true) {
+        vbarPolicy = ScrollPane.ScrollBarPolicy.AS_NEEDED
 
-        useMaxSize = true
-        alignment = Pos.CENTER
+        hboxConstraints {
+            hgrow = Priority.ALWAYS
+        }
 
         vbox {
-            stackpane {
-                val image = fileToUpload.fileThumbnailProperty
-                    .also {
-                        it.assignIfNull { defaultImage }
-                    }
+            val fileToUpload = printerController.selectedFile
+            val fileUploadStatus = printerController.fileUploadStatus
 
-                imageview(image) {
-                    useMaxSize = true
-                }
+            form {
+                labeledseparator("G-code file")
 
-                text(fileToUpload.fileNameProperty) {
-                    stackpaneConstraints {
-                        alignment = Pos.TOP_LEFT
-                    }
-
-                    style {
-                        backgroundColor += Color.BLACK.opacity(0.5)
+                fieldset {
+                    field("Filename") {
+                        label(fileToUpload.fileNameProperty)
                     }
                 }
 
-                text(fileToUpload.fileSizeProperty.asBinaryUnit()) {
-                    stackpaneConstraints {
-                        alignment = Pos.BOTTOM_RIGHT
+                fieldset {
+                    field("Size") {
+                        label(fileToUpload.fileSizeProperty.asBinaryUnit())
                     }
+                }
 
-                    style {
-                        backgroundColor += Color.BLACK.opacity(0.5)
+                fieldset {
+                    field("Thumbnails") {
+                        val image = fileToUpload.fileThumbnailProperty
+                            .also {
+                                it.assignIfNull { defaultImage }
+                            }
+
+                        imageview(image) {
+                            useMaxSize = true
+                        }
                     }
                 }
             }
