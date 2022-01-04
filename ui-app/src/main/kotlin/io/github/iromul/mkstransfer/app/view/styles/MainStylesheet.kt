@@ -1,5 +1,6 @@
 package io.github.iromul.mkstransfer.app.view.styles
 
+import io.github.iromul.mkstransfer.app.view.styles.native.win.Win10NativeStylesheet
 import javafx.scene.Cursor
 import javafx.scene.layout.BorderStrokeStyle
 import javafx.scene.paint.Color
@@ -15,7 +16,7 @@ import tornadofx.px
 
 class MainStylesheet : Stylesheet(
     LabelSeparatorStylesheet::class,
-    WindowToolbarStylesheet::class
+    Win10NativeStylesheet::class
 ) {
 
     companion object {
