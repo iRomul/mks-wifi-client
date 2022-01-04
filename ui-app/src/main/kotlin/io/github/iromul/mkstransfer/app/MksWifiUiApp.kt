@@ -2,6 +2,7 @@ package io.github.iromul.mkstransfer.app
 
 import io.github.iromul.commons.lang.userHome
 import io.github.iromul.commons.nio.file.pathOf
+import io.github.iromul.mkstransfer.app.commons.koin.KoinTornadoFxDiContainer
 import io.github.iromul.mkstransfer.app.service.AboutService
 import io.github.iromul.mkstransfer.app.service.SendService
 import io.github.iromul.mkstransfer.app.view.MainView
@@ -34,10 +35,7 @@ class MksWifiUiApp : App(MainView::class, MainStylesheet::class) {
             modules(beans)
         }
 
-        FX.dicontainer = object : DIContainer {
-            override fun <T : Any> getInstance(type: KClass<T>): T =
-                koinApp.koin.get(type)
-        }
+        FX.dicontainer = KoinTornadoFxDiContainer(koinApp)
 
         addStageIcon(Image(resources["/icons/benchy-orange@64px.png"]))
         addStageIcon(Image(resources["/icons/benchy-orange@128px.png"]))
