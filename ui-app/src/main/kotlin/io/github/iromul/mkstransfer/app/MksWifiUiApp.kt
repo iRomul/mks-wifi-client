@@ -23,7 +23,15 @@ import kotlin.reflect.KClass
 val beans = module {
     single { SendService() }
 
-    single { AboutService(getProperty("app.version"), "", "") }
+    single {
+        AboutService(
+            getProperty("app.version"),
+            "",
+            getProperty("app.author.name"),
+            getProperty("app.author.email"),
+            getProperty("app.license.name")
+        )
+    }
 }
 
 class MksWifiUiApp : App(MainView::class, MainStylesheet::class) {
@@ -42,12 +50,12 @@ class MksWifiUiApp : App(MainView::class, MainStylesheet::class) {
         addStageIcon(Image(resources["/icons/benchy-orange@256px.png"]))
     }
 
+    override val configBasePath = pathOf(userHome, ".mks-wifi-transfer")
+
     override fun start(stage: Stage) {
         stage.initStyle(StageStyle.UNDECORATED)
         super.start(stage)
     }
-
-    override val configBasePath = pathOf(userHome, ".mks-wifi-transfer")
 }
 
 fun main(args: Array<String>) {
