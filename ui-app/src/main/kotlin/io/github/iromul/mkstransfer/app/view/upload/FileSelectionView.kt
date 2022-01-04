@@ -11,7 +11,6 @@ import javafx.scene.input.Dragboard
 import javafx.scene.input.TransferMode
 import javafx.scene.layout.Priority
 import javafx.scene.text.TextAlignment
-import javafx.stage.FileChooser
 import tornadofx.View
 import tornadofx.action
 import tornadofx.addClass
@@ -65,12 +64,7 @@ class FileSelectionView : View() {
 
                     val selectedFile = chooseFile(
                         "Select G-code file",
-                        arrayOf(
-                            FileChooser.ExtensionFilter(
-                                "G-code files",
-                                AllowedGCCodeExtensions.allowedExtensionsMask
-                            )
-                        ),
+                        arrayOf(AllowedGCCodeExtensions.fileChooserFilter),
                         rootDir
                     ).firstOrNull()
 

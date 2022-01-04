@@ -9,12 +9,14 @@ import io.github.iromul.mkstransfer.app.model.upload.UploadStatus
 import javafx.scene.control.ScrollPane
 import javafx.scene.image.Image
 import javafx.scene.layout.Priority
+import tornadofx.FileChooserMode.Save
 import tornadofx.RestProgressBar
 import tornadofx.View
 import tornadofx.action
 import tornadofx.assignIfNull
 import tornadofx.button
 import tornadofx.buttonbar
+import tornadofx.chooseFile
 import tornadofx.enableWhen
 import tornadofx.field
 import tornadofx.fieldset
@@ -72,6 +74,30 @@ class FilePreviewView : View() {
 
                         imageview(image) {
                             useMaxSize = true
+                        }
+                    }
+                }
+            }
+
+            form {
+                labeledseparator("Save to disk")
+
+                fieldset {
+                    field("Save as") {
+                        button("Path") {
+                            action {
+                                val targetFile = chooseFile(
+                                    "Save gcode file as",
+                                    filters = arrayOf(AllowedGCCodeExtensions.fileChooserFilter),
+                                    mode = Save
+                                ) {
+                                    initialFileName = fileToUpload.fileName
+                                }
+
+                                if (targetFile.isNotEmpty()) {
+                                    printerController.saveToFile(targetFile.first())
+                                }
+                            }
                         }
                     }
                 }

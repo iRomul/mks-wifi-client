@@ -48,6 +48,10 @@ class PrinterController : Controller() {
         }
     }
 
+    fun saveToFile(targetFile: File) {
+        targetFile.writeBytes(selectedFile.actualFileToUpload)
+    }
+
     fun setFileToUpload(file: File) {
         val fileBytes = file.readBytes()
 
