@@ -14,11 +14,9 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import org.koin.fileProperties
 import tornadofx.App
-import tornadofx.DIContainer
 import tornadofx.FX
 import tornadofx.addStageIcon
 import tornadofx.launch
-import kotlin.reflect.KClass
 
 val beans = module {
     single { SendService() }

@@ -1,6 +1,7 @@
 package io.github.iromul.mkstransfer.app.model.upload
 
 import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.image.Image
@@ -33,6 +34,12 @@ class SelectedFile(
 
     val fileSizeProperty = fileDataProperty.integerBinding { it?.size ?: 0 }
     val fileSize by fileSizeProperty
+
+    val fileLinesProperty = SimpleIntegerProperty(0)
+    var fileLines by fileLinesProperty
+
+    val materialTypeProperty = SimpleStringProperty("")
+    var materialType by materialTypeProperty
 
     val readyToUpload: Boolean
         get() = hasFile && !fileName.isNullOrEmpty()

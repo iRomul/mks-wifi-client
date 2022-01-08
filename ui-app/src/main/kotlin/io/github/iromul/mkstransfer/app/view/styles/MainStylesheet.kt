@@ -24,6 +24,10 @@ class MainStylesheet : Stylesheet(
         val dragAndDropClickableText by cssclass()
         val dragAndDropPane by cssclass()
         val dragAndDropPaneIsDragover by cssclass()
+        val nav by cssclass()
+        val navButton by cssclass()
+        val navButtonIcon by cssclass()
+        val fancyScroll by cssclass()
     }
 
     init {
@@ -70,6 +74,22 @@ class MainStylesheet : Stylesheet(
 
         dragAndDropPaneIsDragover {
             backgroundColor = multi(Color.GREY)
+        }
+
+        nav {
+            backgroundColor = multi(TRANSPARENT)
+
+            navButton {
+                backgroundColor = multi(TRANSPARENT)
+
+                and(navButtonIcon) {
+                    fontSize = 18.px
+                }
+            }
+        }
+
+        fancyScroll {
+
         }
 
         // Solarized

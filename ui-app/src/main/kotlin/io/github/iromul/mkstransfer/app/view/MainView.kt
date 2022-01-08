@@ -3,7 +3,6 @@ package io.github.iromul.mkstransfer.app.view
 import io.github.iromul.commons.javafx.materialdesign.icons.MaterialIcons
 import io.github.iromul.mkstransfer.app.controller.PrinterController
 import io.github.iromul.mkstransfer.app.view.components.nativeWindowDecoration
-import io.github.iromul.mkstransfer.app.view.control.PrinterControlView
 import io.github.iromul.mkstransfer.app.view.settings.SettingView
 import io.github.iromul.mkstransfer.app.view.upload.FileUploadMainView
 import javafx.application.Platform
@@ -43,20 +42,6 @@ class MainView : View(
 
                     whenSelected {
                         center<FileUploadMainView>()
-                    }
-                }
-
-                item("Control") {
-                    graphic = Text(MaterialIcons.gamepad).apply {
-                        addClass(MaterialIcons.className)
-                        style {
-                            fill = Color.web("#afb1b3")
-                            fontSize = 20.px
-                        }
-                    }
-
-                    whenSelected {
-                        center<PrinterControlView>()
                     }
                 }
 

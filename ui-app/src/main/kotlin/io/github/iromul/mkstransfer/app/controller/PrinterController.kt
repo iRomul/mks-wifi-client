@@ -82,6 +82,23 @@ class PrinterController : Controller() {
                 precessedFileData = stringWriter.toString().toByteArray()
             }
 
+            val extractedMaterialType = gCodeFile.lines
+                .asSequence()
+                .filter { it.isComment }
+                .map { it.commentText }
+                .filter { it.startsWith("FILAMENT_TYPE") }
+                .firstOrNull()
+                ?.let {
+                    "FILAMENT_TYPE=(.*)".toRegex()
+                        .find(it)
+                        ?.groupValues
+                        ?.get(1)
+                }
+
+            materialType = extractedMaterialType
+
+            fileLines = gCodeFile.lines.size
+
             hasFile = true
 
             logger.info { "Loaded GCode file $file (has ${prusaThumbnails.size} thumbnails)" }
@@ -102,28 +119,32 @@ class PrinterController : Controller() {
 
         fileUploadStatus.status = UploadStatus.UPLOADING
 
-        val r = api.post(address, selectedFile.actualFileToUpload.inputStream()) {
-            it.addHeader("Content-Type", "application/octet-stream")
-            it.addHeader("Connection", "keep-alive")
-        }
-
-        try {
-            if (r.ok()) {
-                logger.info { "File sent successfully!" }
-
-                fileUploadStatus.status = UploadStatus.SUCCESS
-            } else {
-                logger.error { "Service invocation is failed with code ${r.statusCode} and message: ${r.reason}" }
-
-                fileUploadStatus.status = UploadStatus.FAILED
-                fileUploadStatus.error = "${r.statusCode}: ${r.reason}"
+        runCatching {
+            api.post(address, selectedFile.actualFileToUpload.inputStream()) {
+                it.addHeader("Content-Type", "application/octet-stream")
+                it.addHeader("Connection", "keep-alive")
             }
-        } catch (e: Throwable) {
-            fileUploadStatus.status = UploadStatus.FAILED
-            fileUploadStatus.error = e.message
-        } finally {
-            r.consume()
         }
+            .onFailure { e ->
+                fileUploadStatus.status = UploadStatus.FAILED
+                fileUploadStatus.error = e.message
+            }
+            .onSuccess { r ->
+                if (r.ok()) {
+                    logger.info { "File sent successfully!" }
+
+                    fileUploadStatus.status = UploadStatus.SUCCESS
+                } else {
+                    logger.error { "Service invocation is failed with code ${r.statusCode} and message: ${r.reason}" }
+
+                    fileUploadStatus.status = UploadStatus.FAILED
+                    fileUploadStatus.error = "${r.statusCode}: ${r.reason}"
+                }
+            }
+            .getOrNull()
+            ?.consume()
+
+
 
         sendService.send()
     }
