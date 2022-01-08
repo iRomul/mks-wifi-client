@@ -40,7 +40,6 @@ import tornadofx.separator
 import tornadofx.setValue
 import tornadofx.stringBinding
 import tornadofx.style
-import tornadofx.text
 import tornadofx.textfield
 import tornadofx.toolbar
 import tornadofx.useMaxSize
@@ -81,7 +80,7 @@ class FilePreviewView : View() {
             label(fileToUpload.fileNameProperty)
         }
 
-        toolbar {
+        hbox {
             addClass(MainStylesheet.nav)
 
             style {
@@ -135,6 +134,7 @@ class FilePreviewView : View() {
                     }
 
                     field("Upload status") {
+                        managedWhen(fileUploadStatus.statusProperty.isNotEqualTo(UploadStatus.IDLE))
                         visibleWhen(fileUploadStatus.statusProperty.isNotEqualTo(UploadStatus.IDLE))
 
                         val uploadStatusText = fileUploadStatus.statusProperty.stringBinding {
@@ -147,7 +147,7 @@ class FilePreviewView : View() {
                             }
                         }
 
-                        text(uploadStatusText)
+                        label(uploadStatusText)
                     }
                 }
 
