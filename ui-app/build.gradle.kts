@@ -44,6 +44,7 @@ dependencies {
     implementation(projects.libraries.javafxMaterialIcons)
     implementation(projects.libraries.stdlibCommons)
     implementation(projects.libraries.tornadofxCommons)
+    implementation("io.github.micheljung:fxstage:0.8.2")
     testImplementation(libs.koin.test)
     testImplementation(platform(libs.junit.bom))
     testImplementation("org.junit.jupiter:junit-jupiter")
